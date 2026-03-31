@@ -10,37 +10,52 @@ function formatDate(date) {
   const d = new Date(date);
   return d.toISOString().slice(0, 10);
 }
+
 fetch(API)
-  .then((r) => r.json())
-  .then((data) => {
-    const allowed = {
-      latest: true,
-      beta: true,
-    };
-    data.forEach((release) => {
-      const prefix = allowed[release.tag_name];
-      if (!prefix) return;
+  .then(res => res.json())
+  .then(data => {
+
+    data.forEach(release => {
+
+      if (release.tag_name !== "release" && release.tag_name !== "beta") return;
+
       const tag = release.tag_name;
+
       document.getElementById(tag + "Version").textContent =
         release.name.replace(/^v/, "");
-      document.getElementById(tag + "Date").textContent = formatDate(
-        release.published_at,
-      );
-      release.assets.forEach((asset) => {
-        const arch = asset.name.includes("Arm64")
-          ? "Arm64"
-          : asset.name.includes("Arm32")
-            ? "Arm32"
-            : "";
-        if (!arch) return;
-        const btn = document.getElementById(tag + arch + "Btn");
-        const link = document.getElementById(tag + arch + "Link");
-        if (!btn || !link) return;
+
+      document.getElementById(tag + "Date").textContent =
+        formatDate(release.published_at);
+
+      release.assets.forEach(asset => {
+
         const size = formatSize(asset.size);
-        btn.innerHTML = `
-					<span>Download ${arch} (${size})</span>`;
-        btn.disabled = false;
-        link.href = asset.browser_download_url;
+
+        if (asset.name.includes("No_Music")) {
+
+          const btn = document.getElementById(tag + "NoMusicBtn");
+          const link = document.getElementById(tag + "NoMusicLink");
+
+          btn.innerHTML = `<span>Download No Music (${size})</span>`;
+          btn.disabled = false;
+
+          link.href = asset.browser_download_url;
+
+        } else {
+
+          const btn = document.getElementById(tag + "MainBtn");
+          const link = document.getElementById(tag + "MainLink");
+
+          btn.innerHTML = `<span>Download Full (${size})</span>`;
+          btn.disabled = false;
+
+          link.href = asset.browser_download_url;
+
+        }
+
       });
+
     });
-  });
+
+  })
+  .catch(err => console.error(err));

@@ -217,6 +217,12 @@ button:disabled {
   color: #4caf50;
 }
 
+.release-link,
+.beta-link {
+color:#4caf50;
+text-decoration:underline;
+}
+
 @media (min-width:768px) {
   .container {
     flex-direction: row;

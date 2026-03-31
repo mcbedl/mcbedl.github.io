@@ -57,7 +57,7 @@ fetch(API)
           const btn = document.getElementById(tag + "NoMusicBtn");
           const link = document.getElementById(tag + "NoMusicLink");
 
-          btn.textContent = `Download No Music (${size})`;
+          btn.innerHTML = `<span>Download No Music (${size})</span>`;
           btn.disabled = false;
 
           link.href = asset.browser_download_url;
@@ -67,7 +67,7 @@ fetch(API)
           const btn = document.getElementById(tag + "MainBtn");
           const link = document.getElementById(tag + "MainLink");
 
-          btn.textContent = `Download Full (${size})`;
+          btn.innerHTML = `<span>Download Full (${size})</span>`;
           btn.disabled = false;
 
           link.href = asset.browser_download_url;
